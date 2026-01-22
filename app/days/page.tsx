@@ -101,10 +101,10 @@ export default function DaysPage() {
                   className={`w-6 h-6 rounded-full transition-all ${
                     day.status === 'passed'
                       ? day.isNewToday 
-                        ? 'bg-white animate-pulse ring-2 ring-white ring-offset-2 ring-offset-background'
+                        ? 'bg-white animate-pulse'
                         : 'bg-white'
                       : day.status === 'today'
-                        ? 'bg-orange-500 scale-125'
+                        ? 'bg-orange-500 scale-150 ring-2 ring-orange-400 ring-offset-2 ring-offset-background'
                         : 'bg-gray-700'
                   }`}
                 />
