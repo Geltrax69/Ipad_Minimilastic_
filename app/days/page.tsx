@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import Loading from './loading';
+import html2canvas from 'html2canvas';
 
 interface DayWithMark {
   date: Date;
@@ -15,10 +16,13 @@ export default function DaysPage() {
   const searchParams = useSearchParams();
   const height = searchParams.get('height') || '2560';
   const width = searchParams.get('width') || '1668';
+  const exportFormat = searchParams.get('format') || 'html'; // 'html' or 'png'
   
+  const contentRef = useRef<HTMLDivElement>(null);
   const [days, setDays] = useState<DayWithMark[]>([]);
   const [stats, setStats] = useState({ passed: 0, dayPercentage: 0, daysLeft: 0 });
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   const updateCalendar = () => {
     const today = new Date();
@@ -85,9 +89,46 @@ export default function DaysPage() {
     return () => clearTimeout(midnightTimer);
   }, []);
 
+  // Export to PNG
+  const exportToPNG = async () => {
+    if (!contentRef.current) return;
+    
+    setIsExporting(true);
+    try {
+      const canvas = await html2canvas(contentRef.current, {
+        backgroundColor: '#000000',
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      });
+      
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = `year-calendar-${new Date().toISOString().split('T')[0]}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Failed to export PNG:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  // Auto-export to PNG if format=png in query params
+  useEffect(() => {
+    if (exportFormat === 'png' && days.length > 0 && !isExporting) {
+      const timer = setTimeout(() => {
+        exportToPNG();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [exportFormat, days, isExporting]);
+
   return (
     <Suspense fallback={<Loading />}>
       <div 
+        ref={contentRef}
         className="bg-background flex items-center justify-center p-4"
         style={{ width: `${width}px`, height: `${height}px` }}
       >
@@ -132,6 +173,19 @@ export default function DaysPage() {
           </div>
         </div>
       </div>
+      
+      {/* Export Button (only visible if not auto-exporting) */}
+      {exportFormat !== 'png' && (
+        <div className="fixed bottom-8 right-8">
+          <button
+            onClick={exportToPNG}
+            disabled={isExporting || days.length === 0}
+            className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            {isExporting ? 'Exporting...' : 'Export as PNG'}
+          </button>
+        </div>
+      )}
     </Suspense>
   );
 }
