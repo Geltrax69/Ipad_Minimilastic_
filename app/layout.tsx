@@ -7,9 +7,15 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'iPad Year Calendar',
+  description: 'Year-in-pixels calendar tracking your progress through 2026',
   generator: 'v0.app',
+  viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'iPad Calendar',
+  },
   icons: {
     icon: [
       {
@@ -27,6 +33,7 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+  manifest: '/manifest.json',
 }
 
 export default function RootLayout({
@@ -37,6 +44,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta charSet="utf-8" />
+        <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="iPad Calendar" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="description" content="Year-in-pixels calendar tracking your progress through 2026" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
