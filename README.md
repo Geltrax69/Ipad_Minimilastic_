@@ -1,71 +1,87 @@
-# Year Calendar Mockup
+# Ipad_Minimilastic_
 
-A beautiful year-in-pixels calendar application built with Next.js, displaying your progress through the year on an iPad 11" mockup.
+> ## Status: 🟢 Completed
+>
+> <progress value="95" max="100"></progress>
+>
+> **Progress: 95%** — year-in-pixels calendar app fully built, CI deploys to GitHub Pages successfully
 
-## Features
+<p align="center">
+  <img src="banner.webp" alt="Ipad_Minimilastic_ banner" width="100%" />
+</p>
 
-- 📅 Visual year-in-pixels calendar
-- 📊 Progress tracking with percentage and days remaining
-- 🎨 iPad 11" mockup display
-- 📱 Responsive design
-- 🔗 Shareable URLs for GitHub Pages deployment
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
+![React](https://img.shields.io/badge/React-19-61dafb?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8?logo=tailwindcss)
 
-## Setup
+## What it is
 
-### Local Development
+A year-in-pixels calendar app built with Next.js that visualises your progress through the current year inside an iPad 11" mockup. Each day is a cell marked passed, today, or future, with stats (days passed, percentage of year, days left). It also has a `/days` share view sized to iPad dimensions, PNG export of the calendar, iOS web-app support, and shareable URLs for GitHub Pages deployment.
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   pnpm install
-   ```
+## What works (verified)
 
-3. Create a `.env.local` file and configure your GitHub Pages URL:
-   ```bash
-   NEXT_PUBLIC_BASE_URL=https://your-username.github.io/year-calendar-mockup
-   ```
+- ✅ Year calendar renders 365/366 day cells with correct leap-year handling — verified by reading `components/year-calendar.tsx`
+- ✅ Stats (days passed, % of year, days left) computed from the current date — verified in code
+- ✅ Share/copy URL flow with clipboard API + fallback — verified in code
+- ✅ `/days` route accepts `width`/`height` params for iPad-sized share views — verified `app/days/page.tsx` exists
+- ✅ GitHub Actions CI ("Deploy to GitHub Pages") is green — verified via `gh run list`, last run 2026-01-22 succeeded
 
-4. Run the development server:
-   ```bash
-   pnpm dev
-   ```
+## Tech stack
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| UI | React 19, Tailwind CSS 4, Radix UI, shadcn-style components |
+| Language | TypeScript 5 |
+| Extras | next-themes, lucide-react, html2canvas (PNG export), Vercel Analytics |
+| Hosting | GitHub Pages (CI-deployed) |
 
-### GitHub Pages Deployment
+## How to run
 
-1. Update `.env.local` with your GitHub Pages URL:
-   ```
-   NEXT_PUBLIC_BASE_URL=https://your-username.github.io/year-calendar-mockup
-   ```
+```bash
+pnpm install
+pnpm dev
+```
 
-2. Build the project:
-   ```bash
-   pnpm build
-   ```
+Then open http://localhost:3000. For the share URL feature, set `NEXT_PUBLIC_BASE_URL` in `.env.local` to your GitHub Pages URL.
 
-3. The output can be deployed to GitHub Pages using GitHub Actions or manually
+Build for production:
 
-## Project Structure
+```bash
+pnpm build
+pnpm start
+```
 
-- `/app` - Next.js app directory with pages
-- `/components` - React components (YearCalendar, UI components)
-- `/lib` - Utility functions
-- `/styles` - Global styles
+## Screenshots
 
-## Environment Variables
+No screenshots in the repo — the app is a visual calendar; the banner above is the visual. The live site is deployed via GitHub Pages CI.
 
-- `NEXT_PUBLIC_BASE_URL` - The base URL for your deployment (required for GitHub Pages URLs to work correctly)
+## What you can add more
 
-## Technologies
+- [ ] Month/week zoom views — currently year-only; a month grid would make near-term planning useful
+- [ ] Custom day marking (habits, moods, events per day) — turns a passive progress display into a tracker
+- [ ] Persist marked days in localStorage — currently nothing is saved between visits
+- [ ] Dark/light theme toggle wired to next-themes — the provider exists but the calendar styling is fixed
 
-- Next.js 16
-- React 19
-- TypeScript
-- Tailwind CSS
-- Radix UI Components
-- Lucide Icons
+## Project structure
 
-## License
+```
+Ipad_Minimilastic_/
+├── app/
+│   ├── page.tsx          # home page, renders YearCalendar
+│   ├── layout.tsx        # root layout
+│   └── days/             # shareable iPad-sized calendar view
+├── components/
+│   ├── year-calendar.tsx # core calendar logic + stats + share URL
+│   ├── theme-provider.tsx
+│   └── ui/               # Radix/shadcn UI primitives
+├── hooks/                # use-mobile, use-toast
+├── lib/utils.ts
+├── public/               # icons, manifest, placeholders
+├── banner.webp
+└── README.md
+```
 
-MIT
+---
+*README written after code audit on 2026-10-08.*
