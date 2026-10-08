@@ -15,6 +15,15 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8?logo=tailwindcss)
 
+## Screenshots
+
+<p align="center">
+  <img src="./screenshot-ui.png" alt="iPad Calendar UI" width="100%" />
+  <br />
+  <em>iPad year calendar — track 2026 progress.</em>
+</p>
+
+
 ## What it is
 
 A year-in-pixels calendar app built with Next.js that visualises your progress through the current year inside an iPad 11" mockup. Each day is a cell marked passed, today, or future, with stats (days passed, percentage of year, days left). It also has a `/days` share view sized to iPad dimensions, PNG export of the calendar, iOS web-app support, and shareable URLs for GitHub Pages deployment.
